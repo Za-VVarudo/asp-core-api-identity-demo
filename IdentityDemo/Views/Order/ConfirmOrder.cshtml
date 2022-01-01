@@ -1,0 +1,113 @@
+﻿@using IdentityDemo.Areas.Models;
+@model IdentityDemo.Models.OrderModel
+
+@{
+    ViewData["Title"] = "Order Success";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var detailList = (List<OrderDetailObject>)ViewBag.DetailList;
+}
+
+<h1>Order success</h1>
+
+<div>
+    @if (Model != null)
+    {
+    <div class="container">
+        <div class="row">
+            <h4 class="col-sm-12 text-center text-success">Order created successfully</h4>
+        </div>
+        <hr /><br/>
+        <div class="row">
+            <div class="col-sm-6">
+                <dl class="row">
+                    <dt class="col-sm-3">
+                        @Html.DisplayNameFor(model => model.Email)
+                    </dt>
+                    <dd class="col-sm-9">
+                        @Html.DisplayFor(model => model.Email)
+                    </dd>
+                    <dt class="col-sm-3">
+                        @Html.DisplayNameFor(model => model.OrderId)
+                    </dt>
+                    <dd class="col-sm-9">
+                        @Html.DisplayFor(model => model.OrderId)
+                    </dd>
+                    <dt class="col-sm-3">
+                        @Html.DisplayNameFor(model => model.OrderDate)
+                    </dt>
+                    <dd class="col-sm-9">
+                        @Html.DisplayFor(model => model.OrderDate)
+                    </dd>
+                    <dt class="col-sm-3">
+                        @Html.DisplayNameFor(model => model.RequiredDate)
+                    </dt>
+                    <dd class="col-sm-9">
+                        @Html.DisplayFor(model => model.RequiredDate)
+                    </dd>
+                    <dt class="col-sm-3">
+                        @Html.DisplayNameFor(model => model.ShippedDate)
+                    </dt>
+                    <dd class="col-sm-9">
+                        @Html.DisplayFor(model => model.ShippedDate)
+                    </dd>
+                    <dt class="col-sm-3">
+                        @Html.DisplayNameFor(model => model.Freight)
+                    </dt>
+                    <dd class="col-sm-9">
+                        @Html.DisplayFor(model => model.Freight)
+                    </dd>
+                </dl>
+            </div>
+            <div class="col-sm-6">
+                @{ if (detailList != null && detailList.Count() > 0)
+                    {
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        @Html.DisplayName("Product Id")
+                                    </th>
+                                    <th>
+                                        @Html.DisplayName("Unit Price")
+                                    </th>
+                                    <th>
+                                        @Html.DisplayName("Quantity")
+                                    </th>
+                                    <th>
+                                        @Html.DisplayName("Discount")
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var detail in detailList)
+                                {
+                                    <tr>
+                                        <td>
+                                            @detail.ProductId
+                                        </td>
+                                        <td>
+                                            @detail.UnitPrice
+                                        </td>
+                                        <td>
+                                            @detail.Quantity
+                                        </td>
+                                        <td>
+                                            @((detail.Discount *100) + "%")
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                        <hr />
+
+                    }
+                    else
+                    {
+                        <p class="text-center">Nothing found</p>
+                    }
+                }
+            </div>
+        </div>
+    </div>
+    }
+</div>

@@ -1,0 +1,82 @@
+﻿@model IdentityDemo.Areas.Identity.Data.AppUsers
+
+@{
+    ViewData["Title"] = "Member Detail";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Member Detail</h1>
+
+<div>
+    <hr />
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-5">
+                <h5 class="text-center text-primary">Member Info</h5><br>
+            </div>
+            <div class="col-sm-7">
+                <h5 class="text-center text-primary">Order History</h5><br>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-5">
+                <dl class="row">
+                    <dt class="col-sm-3">
+                        @Html.DisplayNameFor(model => model.Id)
+                    </dt>
+                    <dd class="col-sm-9">
+                        @Html.ActionLink(Model.Id, "UpdateProfile", "User")
+                    </dd>
+                    <dt class="col-sm-3">
+                        @Html.DisplayName("Full Name")
+                    </dt>
+                    <dd class="col-sm-9">
+                        @Html.DisplayFor(model => model.FullName)
+                    </dd>
+                    <dt class="col-sm-3">
+                        @Html.DisplayName("Email")
+                    </dt>
+                    <dd class="col-sm-9">
+                        @Html.DisplayFor(model => model.Email)
+                    </dd>
+                    <dt class="col-sm-3">
+                        @Html.DisplayName("Address")
+                    </dt>
+                    <dd class="col-sm-9">
+                        @($"{Model.Address}, {Model.City}, {Model.Country}")
+                    </dd>
+                </dl>
+            </div>
+            <div class="col-sm-7">
+                @if (Model.Orders.Count > 0)
+                {
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>@Html.DisplayName("Order Id")</th>
+                                <th>@Html.DisplayName("Create Date")</th>
+                                <th>@Html.DisplayName("Freight")</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+                                foreach (var order in Model.Orders)
+                                {
+                                    <tr>
+                                        <td>@Html.ActionLink(order.OrderId.ToString(), "GetOwnOrderDetail", "Order", new { orderId = order.OrderId }, new { Class = "btn-link" })</td>
+                                        <td>@order.OrderDate</td>
+                                        <td>@order.Freight</td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                }
+                else
+                {
+                    <p class="text-center">No order found</p>
+                }
+            </div>
+        </div>
+    </div>
+</div>

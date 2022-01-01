@@ -1,0 +1,72 @@
+﻿@model IdentityDemo.Models.OrderModel
+
+@{
+    ViewData["Title"] = "CreateOrder";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    string selectedEmail = ViewBag.SelectedEmail;
+    string message = ViewBag.Message;
+    int? code = ViewBag.Code;
+}
+
+<h1>CreateOrder</h1>
+<hr />
+@if (message != null)
+{
+    string style = code == 0 ? "alert-success" : "alert-danger";
+    <p class="@style font-weight-bold text-center">@message</p>
+}
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="CreateOrder" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Email" class="control-label"></label>
+                @if (selectedEmail == null)
+                {
+                    <select asp-for="Email" class="form-control" asp-items="@ViewBag.CmbEmail" required></select>
+                }
+                else
+                {
+                    <input asp-for="Email" class="form-control" required readonly value="@selectedEmail" />
+                }
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="OrderId" class="control-label"></label>
+                <input asp-for="OrderId" class="form-control" readonly required value="@Guid.NewGuid()" />
+                <span asp-validation-for="OrderId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="OrderDate" class="control-label"></label>
+                <input asp-for="OrderDate" class="form-control" readonly required value="@DateTime.Now" type="datetime" />
+                <span asp-validation-for="OrderDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="RequiredDate" class="control-label"></label>
+                <input asp-for="RequiredDate" class="form-control" type="date" value="@(Model?.RequiredDate?.ToString("yyyy-MM-dd")?? DateTime.Now.AddDays(1).ToString("yyyy-MM-dd"))" />
+                <span asp-validation-for="RequiredDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ShippedDate" class="control-label"></label>
+                <input asp-for="ShippedDate" class="form-control" type="date" value="@(Model?.ShippedDate?.ToString("yyyy-MM-dd")?? DateTime.Now.AddDays(1).ToString("yyyy-MM-dd"))" />
+                <span asp-validation-for="ShippedDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Freight" class="control-label"></label>
+                <input asp-for="Freight" class="form-control" />
+                <span asp-validation-for="Freight" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="GetOrders">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

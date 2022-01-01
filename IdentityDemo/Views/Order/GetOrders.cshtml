@@ -1,0 +1,74 @@
+﻿@model IEnumerable<IdentityDemo.Areas.Models.OrderObject>
+
+@{
+    ViewData["Title"] = "Orders";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    string message = TempData["Message"]?.ToString();
+    int code = Convert.ToInt32(TempData["Code"]?.ToString());
+}
+
+<h1>Orders</h1>
+@if (message != null)
+{
+    string style = code == 0 ? "alert-success" : "alert-danger";
+    <p class="@style font-weight-bold text-center">@message</p>
+}
+<p>
+    <a asp-action="CreateOrder">Create New</a>
+</p>
+@if (Model != null && Model.Count() > 0)
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.OrderId)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.OrderDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.RequiredDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ShippedDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Freight)
+                </th>
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.OrderId)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.OrderDate)
+                    </td>
+                    <td>
+                        @item.RequiredDate.Value.ToShortDateString()
+                    </td>
+                    <td>
+                        @item.ShippedDate.Value.ToShortDateString()
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Freight)
+                    </td>
+                    <td>
+                        @if (DateTime.Now <= item.ShippedDate) @Html.ActionLink("Edit", "EditOrder", new { orderId = item.OrderId }) else { <p class="text-danger">Shipped</p> }
+                    </td>
+                    <td>
+                        @Html.ActionLink("Details", "GetOrderDetail", new { orderId = item.OrderId })
+                    </td>
+
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+

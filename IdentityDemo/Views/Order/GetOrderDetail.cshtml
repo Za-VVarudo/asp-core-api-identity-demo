@@ -1,0 +1,119 @@
+﻿@model IdentityDemo.Areas.Models.OrderObject
+
+@{
+    ViewData["Title"] = "Order Detail";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var user = Model.User;
+}
+
+<h1>Order Detail</h1>
+<div>
+    <hr />
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-7">
+                <h5 class="text-center">Order info</h5>
+            </div>
+            <div class="col-sm-5">
+                <h5 class="text-center">Member info</h5>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-7">
+                <dl class="row">
+                    <dt class="col-sm-3">
+                        @Html.DisplayNameFor(model => model.OrderId)
+                    </dt>
+                    <dd class="col-sm-8">
+                        @Html.DisplayFor(model => model.OrderId)
+                    </dd>
+                    <dt class="col-sm-3">
+                        @Html.DisplayNameFor(model => model.OrderDate)
+                    </dt>
+                    <dd class="col-sm-8">
+                        @Html.DisplayFor(model => model.OrderDate)
+                    </dd>
+                    <dt class="col-sm-3">
+                        @Html.DisplayNameFor(model => model.RequiredDate)
+                    </dt>
+                    <dd class="col-sm-8">
+                        @Html.DisplayFor(model => model.RequiredDate.Value.Date)
+                    </dd>
+                    <dt class="col-sm-3">
+                        @Html.DisplayNameFor(model => model.ShippedDate)
+                    </dt>
+                    <dd class="col-sm-8">
+                        @Html.DisplayFor(model => model.ShippedDate.Value.Date)
+                    </dd>
+                    <dt class="col-sm-3">
+                        @Html.DisplayNameFor(model => model.Freight)
+                    </dt>
+                    <dd class="col-sm-8">
+                        @Html.DisplayFor(model => model.Freight)
+                    </dd>
+                </dl>
+            </div>
+            <div class="col-sm-5">
+                <dl class="row">
+                    <dt class="col-sm-3">
+                        @Html.DisplayName("User Id")
+                    </dt>
+                    <dd class="col-sm-9">
+                        @Html.DisplayFor(model => model.UserId)
+                    </dd>
+                    <dt class="col-sm-3">
+                        @Html.DisplayName("Full Name")
+                    </dt>
+                    <dd class="col-sm-9">
+                        @user.FullName
+                    </dd>
+                    <dt class="col-sm-3">
+                        @Html.DisplayName("Email")
+                    </dt>
+                    <dd class="col-sm-9">
+                        @user.Email
+                    </dd>
+                    <dt class="col-sm-3">
+                        @Html.DisplayName("Address")
+                    </dt>
+                    <dd class="col-sm-9">
+                        @($"{user.Address}, {user.City}, {user.Country}")
+                    </dd>
+                </dl>
+            </div>
+        </div>
+    </div>
+    <br />
+    <div class="container">
+        <h5 class="text-center">Order details</h5>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Product Id</th>
+                    <th>Product Name</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>Discount</th>
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    foreach (var detail in Model.OrderDetails)
+                    {
+                        <tr>
+                            <td>@detail.ProductId</td>
+                            <td>@detail.Product.ProductName</td>
+                            <td>@detail.UnitPrice</td>
+                            <td>@detail.Quantity</td>
+                            <td>@detail.Discount</td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+        <div class="text-right">Total: @ViewBag.Total </div>
+    </div>
+</div>
+<div>
+    <a asp-action="GetOrders">Back to List</a>
+</div>

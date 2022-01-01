@@ -1,0 +1,80 @@
+﻿@model IEnumerable<IdentityDemo.Areas.Models.ProductObject>
+
+@{
+    ViewData["Title"] = "Product Manage";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    string message = TempData["Message"]?.ToString();
+    int code = Convert.ToInt32(TempData["Code"]?.ToString());
+}
+
+<h1>Products</h1>
+<hr>
+@if (message != null)
+{
+    string style = code == 0 ? "alert-success" : "alert-danger";
+    <p class="@style font-weight-bold text-center">@message</p>
+}
+@if (Model != null && Model.Count() > 0)
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.ProductId)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.CategoryId)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ProductName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Weight)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.UnitPrice)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.UnitsInStock)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ProductId)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CategoryId)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ProductName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Weight)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.UnitPrice)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.UnitsInStock)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Edit", "EditProduct", new { productId = item.ProductId }) |
+                        @Html.ActionLink("Delete", "DeleteProduct", new { productId = item.ProductId })
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <h4 class="text-center">No product found</h4>
+}
+<p>
+    <a asp-action="AddProduct">Create New</a>
+</p>
